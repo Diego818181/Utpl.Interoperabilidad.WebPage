@@ -1,74 +1,245 @@
-from flask import Flask, render_template, request, redirect, url_for
-
+from flask import Flask, jsonify, request, render_template
 import requests
+import logging
 
 app = Flask(__name__)
 
-#Declarar el API KEY generado de wso2 api manager desde la aplicacion
-API_KEY = 'eyJ4NXQiOiJPREUzWTJaaE1UQmpNRE00WlRCbU1qQXlZemxpWVRJMllqUmhZVFpsT0dJeVptVXhOV0UzWVE9PSIsImtpZCI6ImdhdGV3YXlfY2VydGlmaWNhdGVfYWxpYXMiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbkBjYXJib24uc3VwZXIiLCJhcHBsaWNhdGlvbiI6eyJvd25lciI6ImFkbWluIiwidGllclF1b3RhVHlwZSI6bnVsbCwidGllciI6IlVubGltaXRlZCIsIm5hbWUiOiJhcHBfZmVsaXBlIiwiaWQiOjIsInV1aWQiOiI3ZjZkOWIwNi0yYTljLTQ5NDAtOGFmNi04ZTNhMzc2NWNjMmQifSwiaXNzIjoiaHR0cHM6XC9cL3V0cGx3c28yLnRrOjQ0M1wvYXBpbVwvb2F1dGgyXC90b2tlbiIsInRpZXJJbmZvIjp7IlVubGltaXRlZCI6eyJ0aWVyUXVvdGFUeXBlIjoicmVxdWVzdENvdW50IiwiZ3JhcGhRTE1heENvbXBsZXhpdHkiOjAsImdyYXBoUUxNYXhEZXB0aCI6MCwic3RvcE9uUXVvdGFSZWFjaCI6dHJ1ZSwic3Bpa2VBcnJlc3RMaW1pdCI6MCwic3Bpa2VBcnJlc3RVbml0IjpudWxsfX0sImtleXR5cGUiOiJQUk9EVUNUSU9OIiwicGVybWl0dGVkUmVmZXJlciI6IiIsInN1YnNjcmliZWRBUElzIjpbeyJzdWJzY3JpYmVyVGVuYW50RG9tYWluIjoiY2FyYm9uLnN1cGVyIiwibmFtZSI6IlV0cGxQZXJzb25hcyIsImNvbnRleHQiOiJcL2FwaXBlcnNvbmFcLzEuMCIsInB1Ymxpc2hlciI6ImFkbWluIiwidmVyc2lvbiI6IjEuMCIsInN1YnNjcmlwdGlvblRpZXIiOiJVbmxpbWl0ZWQifSx7InN1YnNjcmliZXJUZW5hbnREb21haW4iOiJjYXJib24uc3VwZXIiLCJuYW1lIjoiVXRwbFBlcnNvbmFzIiwiY29udGV4dCI6IlwvYXBpcGVyc29uYVwvMi4wIiwicHVibGlzaGVyIjoiYWRtaW4iLCJ2ZXJzaW9uIjoiMi4wIiwic3Vic2NyaXB0aW9uVGllciI6IlVubGltaXRlZCJ9LHsic3Vic2NyaWJlclRlbmFudERvbWFpbiI6ImNhcmJvbi5zdXBlciIsIm5hbWUiOiJVdHBsUGVyc29uYXMiLCJjb250ZXh0IjoiXC9hcGlwZXJzb25hXC8zLjAiLCJwdWJsaXNoZXIiOiJhZG1pbiIsInZlcnNpb24iOiIzLjAiLCJzdWJzY3JpcHRpb25UaWVyIjoiVW5saW1pdGVkIn1dLCJ0b2tlbl90eXBlIjoiYXBpS2V5IiwicGVybWl0dGVkSVAiOiIiLCJpYXQiOjE2ODk5NTU1MzQsImp0aSI6ImIzYTJkMjc1LTZhMTEtNDc4My1iMTRhLTMwNGU2ZGJhN2U5MCJ9.cNJlok5z2hJjoHlFcCVqR8UWJkEg_hlLjvmvIEGWiCMUWMAvQ7iWaB4uP5dLQ5vfDzFXp4hirbJmkI5eA8LtU_ebfVLCsDZ_9UnpK6-mS2Wlrvw0HyA9YU7bv-C2PvqWuG9IFB4_EqNRzmf2XuTD8QODEvjHkeei9lzwfaglHUURSrjkzF6Yq1VWgeJawbaVw-iljwBRY1JXvlDwpQAWEMKU_-WJZgfJwW5Aw4OQmozI0rQhAhuI6oaaek-1VaeNwdHSlzaBOU4eZQuueAzzbAMdWAHKPByuci1Ca4n6dfDIhQcGyALB_yIIUy_puDYrZZA4x70tFUpjuo_InvTaEQ=='
+@app.route("/")
+def index():
+    # La funcion render_template cargara el archivo "index.html" del directorio "templates"
+    return render_template("index.html")
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# URL base de los servicios web finales implementados con FastAPI
+API_BASE_URL = "https://utplwso2.tk/utplinteroperabilidadapp/3.0"
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+# Token de autorizacion (este token debe ser obtenido de manera segura en una aplicacion real)
+AUTH_TOKEN = "eyJ4NXQiOiJNV0l5TkRJNVlqRTJaV1kxT0RNd01XSTNOR1ptTVRZeU5UTTJOVFZoWlRnMU5UTTNaVE5oTldKbVpERTFPVEE0TldFMVlUaGxNak5sTldFellqSXlZUSIsImtpZCI6Ik1XSXlOREk1WWpFMlpXWTFPRE13TVdJM05HWm1NVFl5TlRNMk5UVmhaVGcxTlRNM1pUTmhOV0ptWkRFMU9UQTROV0UxWVRobE1qTmxOV0V6WWpJeVlRX1JTMjU2IiwidHlwIjoiYXQrand0IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJlMjkzYjRiNS0xNmFhLTQ5NTQtYTdiYi00NDU1NTIyMWU1MDciLCJhdXQiOiJBUFBMSUNBVElPTiIsImF1ZCI6IjNlRkU5QUMwdmJnc0w4NWFvWjhza2ZNOVhUUWEiLCJuYmYiOjE2OTA2MDQ4NDMsImF6cCI6IjNlRkU5QUMwdmJnc0w4NWFvWjhza2ZNOVhUUWEiLCJzY29wZSI6ImRlZmF1bHQiLCJpc3MiOiJodHRwczpcL1wvbG9jYWxob3N0Ojk0NDNcL29hdXRoMlwvdG9rZW4iLCJleHAiOjE2OTA2MDg0NDMsImlhdCI6MTY5MDYwNDg0MywianRpIjoiMzliNTAwOTYtNjE3Ny00NzRhLWFkZWUtOTRjNTk4OTUyZDljIiwiY2xpZW50X2lkIjoiM2VGRTlBQzB2YmdzTDg1YW9aOHNrZk05WFRRYSJ9.jNN6WMiIxoKquEJo3fB7H3-DNmVSlNgR-CmkiFAabTidap96PfDgjwkZAJ14_rufihEIIp5UwsI5-bT_PhbDw1d6JGmpfDaV4iIOAwl_J8IaL_JbW6eTRy_B6RlwCOVaTnkLTV8CWOJQeSqol1QXQt_2Csy0Ysx90pDMJ8OPLXh4pBIVQx0nNAuc67DdsDnUuO89SfZXq5ZSY73hfMJ449NQcP2oBVaAIYDgtm5jJKPxIGjoYupFaPWvwTPrt-BPyFtAynmzM8FNdMF8XoJUcbYH53KAmxQkGzHetwlwd7gw3sUqNhvZe9HPWZMKvjd11mdJyoYvfQSLvp6C6BT1WQ"
 
-@app.route('/personas')
-def personas():
-    headers = {'apikey': API_KEY}
-    response = requests.get('https://utplwso2.tk/apipersona/3.0/personas', headers=headers)
-    print(response)
-    return render_template('personas.html', personas=response.json())
-
-@app.route('/personas/delete/<idpersona>')
-def delete_personas(idpersona):
-    headers = {'apikey': API_KEY}
-    response = requests.delete('https://utplwso2.tk/apipersona/3.0/personas/'+idpersona, headers=headers)
-    print(response)
-    return redirect(url_for('personas'))
-
-@app.route('/personas', methods=['POST'])
-def add():
-    print("llego por aqui a guardar")
-    nombre = request.form.get('nombre')
-    identificacion = request.form.get('identificacion')
-    edad = int(request.form.get('edad'))
-    ciudad = request.form.get('ciudad')
-
-
-    person_data = {"nombre": nombre, "edad": edad, "ciudad": ciudad, "identificacion": identificacion}
-
-    headers = {'apikey': API_KEY}
-    responseHabitacionesS = requests.post('https://utplwso2.tk/apipersona/3.0/personas', json=person_data, headers=headers)
-
-    return redirect(url_for('personas'))
-
-@app.route('/huespedes')
-def huespedes():
-    responseHabitaciones = requests.get('https://utpl-interoperabilidad-ejercicio1.onrender.com/v1_0/huesped')
-    return render_template('huespedes.html', huespedesl=responseHabitaciones.json())
-
-@app.route('/huespedes', methods=['POST'])
-def addHuesped():
-    print("llego por aqui a guardar huespedes")
-
-    nombreValue = request.form.get('nombre')
-    ciudad = request.form.get('ciudad')
-    edad = int(request.form.get('edad'))
-    hab = int(request.form.get('hab'))
-
-    room_data = {
-        "nombre": nombreValue,
-        "ciudad": ciudad,
-        "edad": edad,
-        "hab": hab
+# Funcion auxiliar para hacer solicitudes HTTP con el header de autorizacion
+def make_authorized_request(method, url, data=None):
+    headers = {
+        "Authorization": f"Bearer {AUTH_TOKEN}"
     }
+    try:
+        if method == "GET":
+            response = requests.get(url, headers=headers)
+        elif method == "POST":
+            response = requests.post(url, json=data, headers=headers)
+        elif method == "DELETE":
+            response = requests.delete(url, headers=headers)
+        else:
+            raise ValueError("Metodo HTTP no valido")
 
-    responseHabitacionesS = requests.post('https://utpl-interoperabilidad-ejercicio1.onrender.com/v1_0/huesped', json=room_data)
+        response.raise_for_status()  # Lanzar una excepcion si la solicitud no es exitosa
 
-    return redirect(url_for('huespedes'))
+        return response.json()
+    except Exception as e:
+        # Si ocurre un error, devolver un JSON con el mensaje de error
+        error_message = f"Error en la solicitud: {str(e)}"
+        return {"error": error_message}
 
-if __name__ == '__main__':
+# Ruta para crear una empresa (version 1.0)
+@app.route("/empresas/v1", methods=["POST"])
+def crear_empresa_v1():
+    data = request.json
+    url = f"{API_BASE_URL}/empresas?v=1.0"
+    response = make_authorized_request("POST", url, data)
+    if response.status_code == 200:
+        empresa = response.json()
+        return jsonify(empresa)
+    else:
+        return jsonify({"message": "Error creando empresa (v1.0)"}), 500
+
+# Ruta para crear una empresa (version 2.0)
+@app.route("/empresas/v2", methods=["POST"])
+def crear_empresa_v2():
+    data = request.json
+    url = f"{API_BASE_URL}/empresas?v=2.0"
+    response = make_authorized_request("POST", url, data)
+    if response.status_code == 200:
+        empresa = response.json()
+        return jsonify(empresa)
+    else:
+        return jsonify({"message": "Error creando empresa (v2.0)"}), 500
+
+# Ruta para crear una empresa (version 3.0)
+@app.route("/empresas/v3", methods=["POST"])
+def crear_empresa_v3():
+    data = request.json
+    url = f"{API_BASE_URL}/empresas?v=3.0"
+    response = make_authorized_request("POST", url, data)
+    if response.status_code == 200:
+        empresa = response.json()
+        return jsonify(empresa)
+    else:
+        return jsonify({"message": "Error creando empresa (v3.0)"}), 500
+
+# Ruta para obtener una lista de empresas (version 1.0)
+@app.route("/empresas/v1", methods=["GET"])
+def get_empresas_v1():
+    url = f"{API_BASE_URL}/empresas?v=1.0"
+    response = make_authorized_request("GET", url)
+    if response.status_code == 200:
+        empresas = response.json()
+        return jsonify(empresas)
+    else:
+        return jsonify({"message": "Error obteniendo empresas (v1.0)"}), 500
+
+# Ruta para obtener una lista de empresas (version 2.0)
+@app.route("/empresas/v2", methods=["GET"])
+def get_empresas_v2():
+    url = f"{API_BASE_URL}/empresas?v=2.0"
+    response = make_authorized_request("GET", url)
+    if response.status_code == 200:
+        empresas = response.json()
+        return jsonify(empresas)
+    else:
+        return jsonify({"message": "Error obteniendo empresas (v2.0)"}), 500
+
+# Ruta para obtener una lista de empresas (version 3.0)
+@app.route("/empresas/v3", methods=["GET"])
+def get_empresas_v3():
+    url = f"{API_BASE_URL}/empresas?v=3.0"
+    response = make_authorized_request("GET", url)
+    if response.status_code == 200:
+        empresas = response.json()
+        return jsonify(empresas)
+    else:
+        return jsonify({"message": "Error obteniendo empresas (v3.0)"}), 500
+
+# Ruta para eliminar una empresa (version 1.0)
+@app.route("/empresas/v1/<id>", methods=["DELETE"])
+def eliminar_empresa_v1(id):
+    url = f"{API_BASE_URL}/empresas/{id}?v=1.0"
+    response = make_authorized_request("DELETE", url)
+    if response.status_code == 200:
+        return jsonify({"message": "Empresa eliminada (v1.0)"})
+    else:
+        return jsonify({"message": "Error eliminando empresa (v1.0)"}), 500
+
+# Ruta para eliminar una empresa (version 2.0)
+@app.route("/empresas/v2/<id>", methods=["DELETE"])
+def eliminar_empresa_v2(id):
+    url = f"{API_BASE_URL}/empresas/{id}?v=2.0"
+    response = make_authorized_request("DELETE", url)
+    if response.status_code == 200:
+        return jsonify({"message": "Empresa eliminada (v2.0)"})
+    else:
+        return jsonify({"message": "Error eliminando empresa (v2.0)"}), 500
+
+# Ruta para eliminar una empresa (version 3.0)
+@app.route("/empresas/v3/<id>", methods=["DELETE"])
+def eliminar_empresa_v3(id):
+    url = f"{API_BASE_URL}/empresas/{id}?v=3.0"
+    response = make_authorized_request("DELETE", url)
+    if response.status_code == 200:
+        return jsonify({"message": "Empresa eliminada (v3.0)"})
+    else:
+        return jsonify({"message": "Error eliminando empresa (v3.0)"}), 500
+
+# Ruta para crear una persona (version 1.0)
+@app.route("/personas/v1", methods=["POST"])
+def crear_persona_v1():
+    data = request.json
+    url = f"{API_BASE_URL}/personas?v=1.0"    
+    try:
+        response = make_authorized_request("POST", url, data)
+        if response.status_code == 200:
+            persona = response.json()
+            return jsonify(persona)
+        else:
+            return jsonify({"message": "Error creando persona (v1.0)"}), 500
+    except Exception as e:
+        # Registrar el error
+        logging.exception("Error en la solicitud para crear persona (v1.0)")
+        return jsonify({"message": "Error interno del servidor"}), 500
+
+# Ruta para crear una persona (version 2.0)
+@app.route("/personas/v2", methods=["POST"])
+def crear_persona_v2():
+    data = request.json
+    url = f"{API_BASE_URL}/personas?v=2.0"
+    response = make_authorized_request("POST", url, data)
+    if response.status_code == 200:
+        persona = response.json()
+        return jsonify(persona)
+    else:
+        return jsonify({"message": "Error creando persona (v2.0)"}), 500
+
+# Ruta para crear una persona (version 3.0)
+@app.route("/personas/v3", methods=["POST"])
+def crear_persona_v3():
+    data = request.json
+    url = f"{API_BASE_URL}/personas?v=3.0"
+    response = make_authorized_request("POST", url, data)
+    if response.status_code == 200:
+        persona = response.json()
+        return jsonify(persona)
+    else:
+        return jsonify({"message": "Error creando persona (v3.0)"}), 500
+
+# Ruta para obtener una lista de personas (version 1.0)
+@app.route("/personas/v1", methods=["GET"])
+def get_personas_v1():
+    url = f"{API_BASE_URL}/personas?v=1.0"
+    response = make_authorized_request("GET", url)
+    if response.status_code == 200:
+        personas = response.json()
+        return jsonify(personas)
+    else:
+        return jsonify({"message": "Error obteniendo personas (v1.0)"}), 500
+
+# Ruta para obtener una lista de personas (version 2.0)
+@app.route("/personas/v2", methods=["GET"])
+def get_personas_v2():
+    url = f"{API_BASE_URL}/personas?v=2.0"
+    response = make_authorized_request("GET", url)
+    if response.status_code == 200:
+        personas = response.json()
+        return jsonify(personas)
+    else:
+        return jsonify({"message": "Error obteniendo personas (v2.0)"}), 500
+
+# Ruta para obtener una lista de personas (version 3.0)
+@app.route("/personas/v3", methods=["GET"])
+def get_personas_v3():
+    url = f"{API_BASE_URL}/personas?v=3.0"
+    response = make_authorized_request("GET", url)
+    if response.status_code == 200:
+        personas = response.json()
+        return jsonify(personas)
+    else:
+        return jsonify({"message": "Error obteniendo personas (v3.0)"}), 500
+
+# Ruta para eliminar una persona (version 1.0)
+@app.route("/personas/v1/<id>", methods=["DELETE"])
+def eliminar_persona_v1(id):
+    url = f"{API_BASE_URL}/personas/{id}?v=1.0"
+    response = make_authorized_request("DELETE", url)
+    if response.status_code == 200:
+        return jsonify({"message": "Persona eliminada (v1.0)"})
+    else:
+        return jsonify({"message": "Error eliminando persona (v1.0)"}), 500
+
+# Ruta para eliminar una persona (version 2.0)
+@app.route("/personas/v2/<id>", methods=["DELETE"])
+def eliminar_persona_v2(id):
+    url = f"{API_BASE_URL}/personas/{id}?v=2.0"
+    response = make_authorized_request("DELETE", url)
+    if response.status_code == 200:
+        return jsonify({"message": "Persona eliminada (v2.0)"})
+    else:
+        return jsonify({"message": "Error eliminando persona (v2.0)"}), 500
+
+# Ruta para eliminar una persona (version 3.0)
+@app.route("/personas/v3/<id>", methods=["DELETE"])
+def eliminar_persona_v3(id):
+    url = f"{API_BASE_URL}/personas/{id}?v=3.0"
+    response = make_authorized_request("DELETE", url)
+    if response.status_code == 200:
+        return jsonify({"message": "Persona eliminada (v3.0)"})
+    else:
+        return jsonify({"message": "Error eliminando persona (v3.0)"}), 500
+
+if __name__ == "__main__":
     app.run(debug=True)
