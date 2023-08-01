@@ -28,6 +28,44 @@
     </form>
 </div>
 
+<!-- Sección para buscar personas por ID -->
+<h2>Buscar Persona por ID</h2>
+<form id="formBuscarPersona">
+    <label for="personaId">ID de Persona:</label>
+    <input type="text" id="personaId" required>
+    <!-- Agregar un select para seleccionar la versión del API de búsqueda de personas -->
+    <label for="versionBuscarPersona">Versión del API:</label>
+    <select id="versionBuscarPersona">
+        <option value="v1">v1.0</option>
+        <option value="v2">v2.0</option>
+        <option value="v3">v3.0</option>
+    </select>
+    <!-- Agregar un botón para buscar persona por ID -->
+    <button type="button" onclick="buscarPersonaPorId()">Buscar Persona</button>
+</form>
+<h1>Listado de Personas</h1>
+<!-- Agregar un botón para obtener personas de cada versión -->
+<div>
+    <button onclick="obtenerPersonasV1()">Obtener Personas v1.0</button>
+    <button onclick="obtenerPersonasV2()">Obtener Personas v2.0</button>
+    <button onclick="obtenerPersonasV3()">Obtener Personas v3.0</button>
+</div>
+<table id="tablaPersonas">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Edad</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="tbodyPersonas"></tbody>
+</table>
+
 <!-- Sección de Crear Empresa -->
 <div class="form-section">
     <h1>Crear Empresa</h1>
@@ -54,29 +92,20 @@
     </form>
 </div>
 
-<h1>Listado de Personas</h1>
-<!-- Agregar un botón para obtener personas de cada versión -->
-<div>
-    <button onclick="obtenerPersonasV1()">Obtener Personas v1.0</button>
-    <button onclick="obtenerPersonasV2()">Obtener Personas v2.0</button>
-    <button onclick="obtenerPersonasV3()">Obtener Personas v3.0</button>
-</div>
-<table id="tablaPersonas">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Edad</th>
-            <th>Email</th>
-            <th>Teléfono</th>
-            <th>Dirección</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody id="tbodyPersonas"></tbody>
-</table>
-
+<h2>Buscar Empresa por ID</h2>
+<form id="formBuscarEmpresa">
+    <label for="empresaId">ID de Empresa:</label>
+    <input type="text" id="empresaId" required>
+    <!-- Agregar un select para seleccionar la versión del API de búsqueda de empresas -->
+    <label for="versionBuscarEmpresa">Versión del API:</label>
+    <select id="versionBuscarEmpresa">
+        <option value="v1">v1.0</option>
+        <option value="v2">v2.0</option>
+        <option value="v3">v3.0</option>
+    </select>
+    <!-- Agregar un botón para buscar empresa por ID -->
+    <button type="button" onclick="buscarEmpresaPorId()">Buscar Empresa</button>
+</form>
 <h1>Listado de Empresas</h1>
 <!-- Agregar un botón para obtener empresas de cada versión -->
 <div>
@@ -98,23 +127,9 @@
     </thead>
     <tbody id="tbodyEmpresas"></tbody>
 </table>
-<!-- Sección para buscar personas por ID -->
-<h2>Buscar Persona por ID</h2>
-<form id="formBuscarPersona">
-    <label for="personaId">ID de Persona:</label>
-    <input type="text" id="personaId" required>
-    <!-- Agregar un select para seleccionar la versión del API de búsqueda de personas -->
-    <label for="versionBuscarPersona">Versión del API:</label>
-    <select id="versionBuscarPersona">
-        <option value="v1">v1.0</option>
-        <option value="v2">v2.0</option>
-        <option value="v3">v3.0</option>
-    </select>
-    <!-- Agregar un botón para buscar persona por ID -->
-    <button type="button" onclick="buscarPersonaPorId()">Buscar Persona</button>
-</form>
+
 <!-- Tabla para mostrar los resultados de la búsqueda de personas por ID -->
-<table id="tablaBuscarPersonas">
+<!--<table id="tablaBuscarPersonas">
     <thead>
         <tr>
             <th>ID</th>
@@ -128,28 +143,12 @@
         </tr>
     </thead>
     <tbody id="tbodyBuscarPersonas"></tbody>
-</table>
-
-<h1>Listado de Empresas</h1>
+</table>-->
 <!-- Botones para obtener empresas de cada versión (se mantiene igual) -->
 <!-- ... (Sección de obtención de empresas) ... -->
 <!-- Sección para buscar empresas por ID -->
-<h2>Buscar Empresa por ID</h2>
-<form id="formBuscarEmpresa">
-    <label for="empresaId">ID de Empresa:</label>
-    <input type="text" id="empresaId" required>
-    <!-- Agregar un select para seleccionar la versión del API de búsqueda de empresas -->
-    <label for="versionBuscarEmpresa">Versión del API:</label>
-    <select id="versionBuscarEmpresa">
-        <option value="v1">v1.0</option>
-        <option value="v2">v2.0</option>
-        <option value="v3">v3.0</option>
-    </select>
-    <!-- Agregar un botón para buscar empresa por ID -->
-    <button type="button" onclick="buscarEmpresaPorId()">Buscar Empresa</button>
-</form>
 <!-- Tabla para mostrar los resultados de la búsqueda de empresas por ID -->
-<table id="tablaBuscarEmpresas">
+<!--<table id="tablaBuscarEmpresas">
     <thead>
         <tr>
             <th>ID</th>
@@ -162,281 +161,281 @@
         </tr>
     </thead>
     <tbody id="tbodyBuscarEmpresas"></tbody>
-</table>
+</table>-->
 
 <script>
-        // Funciones para cada versión del API de creación de personas
-        function crearPersona() {
-            const versionPersona = document.getElementById('versionPersona').value;
-            const nombre = document.getElementById('nombre').value;
-            const apellido = document.getElementById('apellido').value;
-            const edad = document.getElementById('edad').value;
-            const email = document.getElementById('email').value;
-            const telefono = document.getElementById('telefono').value;
-            const direccion = document.getElementById('direccion').value;
+    // Funciones para cada versión del API de creación de personas
+    function crearPersona() {
+        const versionPersona = document.getElementById('versionPersona').value;
+        const nombre = document.getElementById('nombre').value;
+        const apellido = document.getElementById('apellido').value;
+        const edad = document.getElementById('edad').value;
+        const email = document.getElementById('email').value;
+        const telefono = document.getElementById('telefono').value;
+        const direccion = document.getElementById('direccion').value;
 
-            switch (versionPersona) {
-                case 'v1':
-                    crearPersonaV1(nombre, apellido, edad, email);
-                    break;
-                case 'v2':
-                    crearPersonaV2(nombre, apellido, edad, email, telefono);
-                    break;
-                case 'v3':
-                    crearPersonaV3(nombre, apellido, edad, email, telefono, direccion);
-                    break;
-                default:
-                    console.error('Versión de API no válida');
-            }
-        };
+        switch (versionPersona) {
+            case 'v1':
+                crearPersonaV1(nombre, apellido, edad, email);
+                break;
+            case 'v2':
+                crearPersonaV2(nombre, apellido, edad, email, telefono);
+                break;
+            case 'v3':
+                crearPersonaV3(nombre, apellido, edad, email, telefono, direccion);
+                break;
+            default:
+                console.error('Versión de API no válida');
+        }
+    };
 
-        function crearPersonaV1(nombre, apellido, edad, email) {
-            fetch('/personas/v1', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombre: nombre,
-                    apellido: apellido,
-                    edad: parseInt(edad),
-                    email: email
-                })
+    function crearPersonaV1(nombre, apellido, edad, email) {
+        fetch('/personas/v1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre: nombre,
+                apellido: apellido,
+                edad: parseInt(edad),
+                email: email
             })
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Persona creada (v1.0):', data);
             })
             .catch(error => console.error('Error creando persona (v1.0):', error));
-        }
+    }
 
-        function crearPersonaV2(nombre, apellido, edad, email, telefono) {
-            fetch('/personas/v2', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombre: nombre,
-                    apellido: apellido,
-                    edad: parseInt(edad),
-                    email: email,
-                    telefono: telefono
-                })
+    function crearPersonaV2(nombre, apellido, edad, email, telefono) {
+        fetch('/personas/v2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre: nombre,
+                apellido: apellido,
+                edad: parseInt(edad),
+                email: email,
+                telefono: telefono
             })
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Persona creada (v2.0):', data);
             })
             .catch(error => console.error('Error creando persona (v2.0):', error));
-        }
+    }
 
-        function crearPersonaV3(nombre, apellido, edad, email, telefono, direccion) {
-            fetch('/personas/v3', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombre: nombre,
-                    apellido: apellido,
-                    edad: parseInt(edad),
-                    email: email,
-                    telefono: telefono,
-                    direccion: direccion
-                })
+    function crearPersonaV3(nombre, apellido, edad, email, telefono, direccion) {
+        fetch('/personas/v3', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre: nombre,
+                apellido: apellido,
+                edad: parseInt(edad),
+                email: email,
+                telefono: telefono,
+                direccion: direccion
             })
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Persona creada (v3.0):', data);
             })
             .catch(error => console.error('Error creando persona (v3.0):', error));
+    }
+
+    // Funciones para cada versión del API de creación de empresas
+    function crearEmpresa() {
+        const versionEmpresa = document.getElementById('versionEmpresa').value;
+        const nombreEmpresa = document.getElementById('nombreEmpresa').value;
+        const pais = document.getElementById('pais').value;
+        const ciudad = document.getElementById('ciudad').value;
+        const identificacion = document.getElementById('identificacion').value;
+        const telefonoEmpresa = document.getElementById('telefonoEmpresa').value;
+
+        switch (versionEmpresa) {
+            case 'v1':
+                crearEmpresaV1(nombreEmpresa, pais, ciudad);
+                break;
+            case 'v2':
+                crearEmpresaV2(nombreEmpresa, pais, ciudad, identificacion);
+                break;
+            case 'v3':
+                crearEmpresaV3(nombreEmpresa, pais, ciudad, identificacion, telefonoEmpresa);
+                break;
+            default:
+                console.error('Versión de API no válida');
         }
+    }
 
-        // Funciones para cada versión del API de creación de empresas
-        function crearEmpresa() {
-            const versionEmpresa = document.getElementById('versionEmpresa').value;
-            const nombreEmpresa = document.getElementById('nombreEmpresa').value;
-            const pais = document.getElementById('pais').value;
-            const ciudad = document.getElementById('ciudad').value;
-            const identificacion = document.getElementById('identificacion').value;
-            const telefonoEmpresa = document.getElementById('telefonoEmpresa').value;
-
-            switch (versionEmpresa) {
-                case 'v1':
-                    crearEmpresaV1(nombreEmpresa, pais, ciudad);
-                    break;
-                case 'v2':
-                    crearEmpresaV2(nombreEmpresa, pais, ciudad, identificacion);
-                    break;
-                case 'v3':
-                    crearEmpresaV3(nombreEmpresa, pais, ciudad, identificacion, telefonoEmpresa);
-                    break;
-                default:
-                    console.error('Versión de API no válida');
-            }
-        }
-
-        function crearEmpresaV1(nombreEmpresa, pais, ciudad) {
-            fetch('/empresas/v1', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombre: nombreEmpresa,
-                    pais: pais,
-                    ciudad: ciudad
-                })
+    function crearEmpresaV1(nombreEmpresa, pais, ciudad) {
+        fetch('/empresas/v1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre: nombreEmpresa,
+                pais: pais,
+                ciudad: ciudad
             })
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Empresa creada (v1.0):', data);
             })
             .catch(error => console.error('Error creando empresa (v1.0):', error));
-        }
+    }
 
-        function crearEmpresaV2(nombreEmpresa, pais, ciudad, identificacion) {
-            fetch('/empresas/v2', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombre: nombreEmpresa,
-                    pais: pais,
-                    ciudad: ciudad,
-                    identificacion: identificacion
-                })
+    function crearEmpresaV2(nombreEmpresa, pais, ciudad, identificacion) {
+        fetch('/empresas/v2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre: nombreEmpresa,
+                pais: pais,
+                ciudad: ciudad,
+                identificacion: identificacion
             })
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Empresa creada (v2.0):', data);
             })
             .catch(error => console.error('Error creando empresa (v2.0):', error));
-        }
+    }
 
-        function crearEmpresaV3(nombreEmpresa, pais, ciudad, identificacion, telefonoEmpresa) {
-            fetch('/empresas/v3', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombre: nombreEmpresa,
-                    pais: pais,
-                    ciudad: ciudad,
-                    identificacion: identificacion,
-                    telefono: telefonoEmpresa
-                })
+    function crearEmpresaV3(nombreEmpresa, pais, ciudad, identificacion, telefonoEmpresa) {
+        fetch('/empresas/v3', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombre: nombreEmpresa,
+                pais: pais,
+                ciudad: ciudad,
+                identificacion: identificacion,
+                telefono: telefonoEmpresa
             })
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Empresa creada (v3.0):', data);
             })
             .catch(error => console.error('Error creando empresa (v3.0):', error));
-        }
+    }
 
-        // Funciones para cada versión del API de obtención de personas
-        async function obtenerPersonasV1() {
-            try {
-                const response = await fetch('/personas/v1');
-                const data = await response.json();
-                console.log('Personas (v1.0):', data);
-                renderizarTablaPersonas(data);
-            } catch (error) {
-                console.error('Error obteniendo personas (v1.0):', error);
-            }
+    // Funciones para cada versión del API de obtención de personas
+    async function obtenerPersonasV1() {
+        try {
+            const response = await fetch('/personas/v1');
+            const data = await response.json();
+            console.log('Personas (v1.0):', data);
+            renderizarTablaPersonas(data);
+        } catch (error) {
+            console.error('Error obteniendo personas (v1.0):', error);
         }
+    }
 
-        function obtenerPersonasV2() {
-            fetch('/personas/v2')
+    function obtenerPersonasV2() {
+        fetch('/personas/v2')
             .then(response => response.json())
             .then(data => {
                 console.log('Personas (v2.0):', data);
                 renderizarTablaPersonas(data);
             })
             .catch(error => console.error('Error obteniendo personas (v2.0):', error));
-        }
+    }
 
-        function obtenerPersonasV3() {
-            fetch('/personas/v3')
+    function obtenerPersonasV3() {
+        fetch('/personas/v3')
             .then(response => response.json())
             .then(data => {
                 console.log('Personas (v3.0):', data);
                 renderizarTablaPersonas(data);
             })
             .catch(error => console.error('Error obteniendo personas (v3.0):', error));
-        }
+    }
 
-        // Funciones para cada versión del API de obtención de empresas
-        function obtenerEmpresasV1() {
-            fetch('/empresas/v1')
+    // Funciones para cada versión del API de obtención de empresas
+    function obtenerEmpresasV1() {
+        fetch('/empresas/v1')
             .then(response => response.json())
             .then(data => {
                 console.log('Empresas (v1.0):', data);
                 renderizarTablaEmpresas(data);
             })
             .catch(error => console.error('Error obteniendo empresas (v1.0):', error));
-        }
+    }
 
-        function obtenerEmpresasV2() {
-            fetch('/empresas/v2')
+    function obtenerEmpresasV2() {
+        fetch('/empresas/v2')
             .then(response => response.json())
             .then(data => {
                 console.log('Empresas (v2.0):', data);
                 renderizarTablaEmpresas(data);
             })
             .catch(error => console.error('Error obteniendo empresas (v2.0):', error));
-        }
+    }
 
-        function obtenerEmpresasV3() {
-            fetch('/empresas/v3')
+    function obtenerEmpresasV3() {
+        fetch('/empresas/v3')
             .then(response => response.json())
             .then(data => {
                 console.log('Empresas (v3.0):', data);
                 renderizarTablaEmpresas(data);
             })
             .catch(error => console.error('Error obteniendo empresas (v3.0):', error));
-        }
+    }
 
-        // Función para buscar persona por ID
-        function buscarPersonaPorId() {
-            debugger;
-            const personaId = document.getElementById('personaId').value;
-            const version = document.getElementById('versionBuscarPersona').value;
-            var path = '/personas/${version}/${personaId}';
-            fetch(`/personas/${version}/${personaId}`)
+    // Función para buscar persona por ID
+    function buscarPersonaPorId() {
+        debugger;
+        const personaId = document.getElementById('personaId').value;
+        const version = document.getElementById('versionBuscarPersona').value;
+        var path = '/personas/${version}/${personaId}';
+        fetch(`/personas/${version}/${personaId}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Persona encontrada:', data);
                 renderizarTablaPersonas([data]);
             })
             .catch(error => console.error('Error buscando persona:', error));
-        }
+    }
 
-        // Función para buscar empresa por ID
-        function buscarEmpresaPorId() {
-            debugger;
-            const empresaId = document.getElementById('empresaId').value;
-            const version = document.getElementById('versionBuscarEmpresa').value;
+    // Función para buscar empresa por ID
+    function buscarEmpresaPorId() {
+        debugger;
+        const empresaId = document.getElementById('empresaId').value;
+        const version = document.getElementById('versionBuscarEmpresa').value;
 
-            fetch(`/empresas/${version}/${empresaId}`)
+        fetch(`/empresas/${version}/${empresaId}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Empresa encontrada:', data);
                 renderizarTablaEmpresas([data]);
             })
             .catch(error => console.error('Error buscando empresa:', error));
-        }
+    }
 
-        // Función para renderizar la tabla de personas
-        function renderizarTablaPersonas(data) {
-            const tbodyPersonas = document.getElementById('tbodyPersonas');
-            tbodyPersonas.innerHTML = '';
-            data.forEach(persona => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
+    // Función para renderizar la tabla de personas
+    function renderizarTablaPersonas(data) {
+        const tbodyPersonas = document.getElementById('tbodyPersonas');
+        tbodyPersonas.innerHTML = '';
+        data.forEach(persona => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
                     <td>${persona.id}</td>
                     <td>${persona.nombre}</td>
                     <td>${persona.apellido}</td>
@@ -448,17 +447,17 @@
                         <button onclick="eliminarPersona('${persona.id}')">Eliminar</button>
                     </td>
                 `;
-                tbodyPersonas.appendChild(tr);
-            });
-        }
+            tbodyPersonas.appendChild(tr);
+        });
+    }
 
-        // Función para renderizar la tabla de empresas
-        function renderizarTablaEmpresas(data) {
-            const tbodyEmpresas = document.getElementById('tbodyEmpresas');
-            tbodyEmpresas.innerHTML = '';
-            data.forEach(empresa => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
+    // Función para renderizar la tabla de empresas
+    function renderizarTablaEmpresas(data) {
+        const tbodyEmpresas = document.getElementById('tbodyEmpresas');
+        tbodyEmpresas.innerHTML = '';
+        data.forEach(empresa => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
                     <td>${empresa.id}</td>
                     <td>${empresa.nombre}</td>
                     <td>${empresa.pais}</td>
@@ -469,77 +468,77 @@
                         <button onclick="eliminarEmpresa('${empresa.id}')">Eliminar</button>
                     </td>
                 `;
-                tbodyEmpresas.appendChild(tr);
-            });
-        }
+            tbodyEmpresas.appendChild(tr);
+        });
+    }
 
-        // Funciones para cada versión del API de eliminación de personas
-        function eliminarPersona(id) {
-            fetch(`/personas/v1/${id}`, {
-                method: 'DELETE'
-            })
+    // Funciones para cada versión del API de eliminación de personas
+    function eliminarPersona(id) {
+        fetch(`/personas/v1/${id}`, {
+            method: 'DELETE'
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Persona eliminada (v1.0):', data);
             })
             .catch(error => console.error('Error eliminando persona (v1.0):', error));
-        }
+    }
 
-        function eliminarPersonaV2(id) {
-            fetch(`/personas/v2/${id}`, {
-                method: 'DELETE'
-            })
+    function eliminarPersonaV2(id) {
+        fetch(`/personas/v2/${id}`, {
+            method: 'DELETE'
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Persona eliminada (v2.0):', data);
             })
             .catch(error => console.error('Error eliminando persona (v2.0):', error));
-        }
+    }
 
-        function eliminarPersonaV3(id) {
-            fetch(`/personas/v3/${id}`, {
-                method: 'DELETE'
-            })
+    function eliminarPersonaV3(id) {
+        fetch(`/personas/v3/${id}`, {
+            method: 'DELETE'
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Persona eliminada (v3.0):', data);
             })
             .catch(error => console.error('Error eliminando persona (v3.0):', error));
-        }
+    }
 
-        // Funciones para cada versión del API de eliminación de empresas
-        function eliminarEmpresa(id) {
-            fetch(`/empresas/v1/${id}`, {
-                method: 'DELETE'
-            })
+    // Funciones para cada versión del API de eliminación de empresas
+    function eliminarEmpresa(id) {
+        fetch(`/empresas/v1/${id}`, {
+            method: 'DELETE'
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Empresa eliminada (v1.0):', data);
             })
             .catch(error => console.error('Error eliminando empresa (v1.0):', error));
-        }
+    }
 
-        function eliminarEmpresaV2(id) {
-            fetch(`/empresas/v2/${id}`, {
-                method: 'DELETE'
-            })
+    function eliminarEmpresaV2(id) {
+        fetch(`/empresas/v2/${id}`, {
+            method: 'DELETE'
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Empresa eliminada (v2.0):', data);
             })
             .catch(error => console.error('Error eliminando empresa (v2.0):', error));
-        }
+    }
 
-        function eliminarEmpresaV3(id) {
-            fetch(`/empresas/v3/${id}`, {
-                method: 'DELETE'
-            })
+    function eliminarEmpresaV3(id) {
+        fetch(`/empresas/v3/${id}`, {
+            method: 'DELETE'
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Empresa eliminada (v3.0):', data);
             })
             .catch(error => console.error('Error eliminando empresa (v3.0):', error));
-        }
+    }
 
 </script>
 {% endblock %}
