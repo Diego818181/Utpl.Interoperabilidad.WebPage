@@ -346,7 +346,6 @@
                 renderizarTablaPersonas(data);
             } catch (error) {
                 console.error('Error obteniendo personas (v1.0):', error);
-                debugger; // Punto de depuración para revisar el error
             }
         }
 
@@ -403,10 +402,11 @@
 
         // Función para buscar persona por ID
         function buscarPersonaPorId() {
+            debugger;
             const personaId = document.getElementById('personaId').value;
             const version = document.getElementById('versionBuscarPersona').value;
-
-            fetch('/personas/${version}/${personaId}')
+            var path = '/personas/${version}/${personaId}';
+            fetch(`/personas/${version}/${personaId}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Persona encontrada:', data);
@@ -417,10 +417,11 @@
 
         // Función para buscar empresa por ID
         function buscarEmpresaPorId() {
+            debugger;
             const empresaId = document.getElementById('empresaId').value;
             const version = document.getElementById('versionBuscarEmpresa').value;
 
-            fetch('/empresas/${version}/${empresaId}')
+            fetch(`/empresas/${version}/${empresaId}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Empresa encontrada:', data);
@@ -473,8 +474,8 @@
         }
 
         // Funciones para cada versión del API de eliminación de personas
-        function eliminarPersonaV1(id) {
-            fetch('/personas/v1/${id}', {
+        function eliminarPersona(id) {
+            fetch(`/personas/v1/${id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())
@@ -485,7 +486,7 @@
         }
 
         function eliminarPersonaV2(id) {
-            fetch('/personas/v2/${id}', {
+            fetch(`/personas/v2/${id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())
@@ -496,7 +497,7 @@
         }
 
         function eliminarPersonaV3(id) {
-            fetch('/personas/v3/${id}', {
+            fetch(`/personas/v3/${id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())
@@ -507,8 +508,8 @@
         }
 
         // Funciones para cada versión del API de eliminación de empresas
-        function eliminarEmpresaV1(id) {
-            fetch('/empresas/v1/${id}', {
+        function eliminarEmpresa(id) {
+            fetch(`/empresas/v1/${id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())
@@ -519,7 +520,7 @@
         }
 
         function eliminarEmpresaV2(id) {
-            fetch('/empresas/v2/${id}', {
+            fetch(`/empresas/v2/${id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())
@@ -530,7 +531,7 @@
         }
 
         function eliminarEmpresaV3(id) {
-            fetch('/empresas/v3/${id}', {
+            fetch(`/empresas/v3/${id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())
